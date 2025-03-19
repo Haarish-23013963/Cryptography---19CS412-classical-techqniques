@@ -121,122 +121,146 @@ To decrypt, use the INVERSE (opposite) of the last 3 rules, and the 1st as-is (d
 
 
 ## PROGRAM:
+### NAME: HAARISH V
+### REGISTER NO: 212223230067
 ```
- #include <stdio.h>
- #include <string.h>
- #include <ctype.h>
- #define SIZE 5
- void generateKeyTable(char key[], char keyTable[SIZE][SIZE]) {
- int dicty[26] = {0};
- int i, j, k = 0, len = strlen(key);
- for (i = 0; i < len; i++) {
- if (key[i] != 'j' && dicty[key[i] - 'a'] == 0) {
- keyTable[k / SIZE][k % SIZE] = key[i];
-            dicty[key[i] - 'a'] = 1;
-            k++;
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+#define MX 5
+
+void playfair(char ch1, char ch2, char key[MX][MX])
+{
+    int i, j, w, x, y, z;
+    FILE *out;
+    if ((out = fopen("cipher.txt", "a+")) == NULL)
+    {
+        printf("File Corrupted.");
+    }
+    for (i = 0; i < MX; i++)
+    {
+        for (j = 0; j < MX; j++)
+        {
+            if (ch1 == key[i][j])
+            {
+                w = i;
+                x = j;
+            }
+            else if (ch2 == key[i][j])
+            {
+                y = i;
+                z = j;
+            }
         }
     }
-    for (i = 0; i < 26; i++) {
-        if (i != 9 && dicty[i] == 0) { // skip 'j'
-            keyTable[k / SIZE][k % SIZE] = (char)(i + 'a');
-            k++;
-        }
+    if (w == y)
+    {
+        x = (x + 1) % 5;
+        z = (z + 1) % 5;
+        printf("%c%c", key[w][x], key[y][z]);
+        fprintf(out, "%c%c", key[w][x], key[y][z]);
+    } 
+    else if (x == z) 
+    {
+        w = (w + 1) % 5;
+        y = (y + 1) % 5;
+        printf("%c%c", key[w][x], key[y][z]);
+        fprintf(out, "%c%c", key[w][x], key[y][z]);
+    } 
+    else 
+    {
+        printf("%c%c", key[w][z], key[y][x]);
+        fprintf(out, "%c%c", key[w][z], key[y][x]);
     }
- }
- void prepareText(char text[], char preparedText[]) {
-    int i, j = 0, len = strlen(text);
-    for (i = 0; i < len; i++) {
-        text[i] = tolower(text[i]);
-        if (text[i] == 'j') {
-            text[i] = 'i';
-        }
+    fclose(out);
+}
+
+int main() 
+{
+    int i, j, k = 0, l, m = 0, n;
+    char key[MX][MX], keyminus[25], keystr[10], str[25] = {0};
+    char alpa[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    printf("\nEnter key: ");
+    fgets(keystr, sizeof(keystr), stdin);
+    keystr[strcspn(keystr, "\n")] = 0; // Remove newline character
+
+    printf("\nEnter the plain text: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = 0; // Remove newline character
+    n = strlen(keystr);
+    for (i = 0; i < n; i++) 
+    {
+        if (keystr[i] == 'j') keystr[i] = 'i';
+        else if (keystr[i] == 'J') keystr[i] = 'I';
+        keystr[i] = toupper(keystr[i]);
     }
-    for (i = 0; i < len; i++) {
-        if (isalpha(text[i])) {
-            preparedText[j++] = text[i];
-        }
+    for (i = 0; i < strlen(str); i++) {
+        if (str[i] == 'j') str[i] = 'i';
+        else if (str[i] == 'J') str[i] = 'I';
+        str[i] = toupper(str[i]);
     }
-    preparedText[j] = '\0';
-    for (i = 0; i < j; i += 2) {
-        if (preparedText[i] == preparedText[i + 1]) {
-            memmove(preparedText + i + 2, preparedText + i + 1, j - i + 
-1);
-            preparedText[i + 1] = 'x';
+    j = 0;
+    for (i = 0; i < 26; i++)
+    {
+        for (k = 0; k < n; k++)
+        {
+            if (keystr[k] == alpa[i]) break;
+            else if (alpa[i] == 'J') break;
+        }
+        if (k == n)
+        {
+            keyminus[j] = alpa[i];
             j++;
         }
     }
-    if (strlen(preparedText) % 2 != 0) {
-        preparedText[j++] = 'x';
-        preparedText[j] = '\0';
-    }
- }
- void searchPosition(char keyTable[SIZE][SIZE], char a, char b, int 
-pos[]) {
-    int i, j;
-    if (a == 'j') a = 'i';
-    if (b == 'j') b = 'i';
-    for (i = 0; i < SIZE; i++) {
-        for (j = 0; j < SIZE; j++) {
-            if (keyTable[i][j] == a) {
-                pos[0] = i;
-                pos[1] = j;
+    k = 0;
+    for (i = 0; i < MX; i++) 
+    {
+        for (j = 0; j < MX; j++)
+        {
+            if (k < n)
+            {
+                key[i][j] = keystr[k];
+                k++;
+            } 
+            else
+            {
+                key[i][j] = keyminus[m];
+                m++;
             }
-            if (keyTable[i][j] == b) {
-                pos[2] = i;
-                pos[3] = j;
+            printf("%c ", key[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n\nEntered text :%s\nCipher Text :",str);
+    for (i = 0; i < strlen(str); i++) 
+    {
+        if (str[i] == 'J') str[i] = 'I';
+        if (str[i + 1] == '\0') playfair(str[i], 'X', key);
+        else
+        {
+            if (str[i + 1] == 'J') str[i + 1] = 'I';
+            if (str[i] == str[i + 1]) playfair(str[i], 'X', key);
+            else 
+            {
+                playfair(str[i], str[i + 1], key);
+                i++;
             }
         }
+  
     }
- }
- void encryptOrDecrypt(char text[], char keyTable[SIZE][SIZE], int mode) 
-{
-    int i, pos[4], len = strlen(text);
-    for (i = 0; i < len; i += 2) {
-        searchPosition(keyTable, text[i], text[i + 1], pos);
-        if (pos[0] == pos[2]) {
-            text[i] = keyTable[pos[0]][(pos[1] + mode + SIZE) % SIZE];
-            text[i + 1] = keyTable[pos[2]][(pos[3] + mode + SIZE) % 
-SIZE];
-        } else if (pos[1] == pos[3]) {
-            text[i] = keyTable[(pos[0] + mode + SIZE) % SIZE][pos[1]];
-            text[i + 1] = keyTable[(pos[2] + mode + SIZE) % SIZE]
- [pos[3]];
-        } else {
-            text[i] = keyTable[pos[0]][pos[3]];
-            text[i + 1] = keyTable[pos[2]][pos[1]];
-        }
-    }
- }
- int main() {
-    char key[30], text[100], preparedText[100], keyTable[SIZE][SIZE];
-    int choice;
-    printf("Enter the key: ");
-    gets(key);
-    generateKeyTable(key, keyTable);
-    printf("Enter the text: ");
-    gets(text);
-    prepareText(text, preparedText);
-    printf("Enter 1 to encrypt or 2 to decrypt: ");
-    scanf("%d", &choice);
-    if (choice == 1) {
-        encryptOrDecrypt(preparedText, keyTable, 1);  
-        printf("Encrypted text: %s\n", preparedText);
-    } else if (choice == 2) {
-        encryptOrDecrypt(preparedText, keyTable, -1); 
-        printf("Decrypted text: %s\n", preparedText);
-    } else {
-        printf("Invalid choice!\n");
-    }
+     printf("\nDecrypted text:%s",str);
     return 0;
- }
+}
  
 ```
 ## OUTPUT:
 
+
+
 ## Simulating Play Fair Cipher:
 
-![Screenshot 2024-09-02 104145](https://github.com/user-attachments/assets/94fb97a9-e324-4389-9545-99c8de0365da)
-
+![Screenshot 2025-03-19 195542](https://github.com/user-attachments/assets/acc304bb-9c35-4362-903b-3476c2091611)
 
 ## RESULT:
 
