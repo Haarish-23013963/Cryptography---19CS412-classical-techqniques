@@ -296,7 +296,8 @@ The cipher can, be adapted to an alphabet with any number of letters. All arithm
 
 
 ## PROGRAM:
-
+### NAME: HAARISH V
+### REGISTER NO: 212223230067
 ## Hill Cipher
 ```
  #include <stdio.h>
@@ -346,7 +347,8 @@ for (j = 0; j < 3; j++) {
  }
  getchar(); 
  return 0;
- }```
+ }
+```
 ## OUTPUT:
 
 ## Simulating Hill Cipher
