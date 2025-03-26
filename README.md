@@ -299,101 +299,60 @@ The cipher can, be adapted to an alphabet with any number of letters. All arithm
 
 ## Hill Cipher
 ```
-#include <stdio.h>
+ #include <stdio.h>
  #include <string.h>
- #include <ctype.h>  // Include the necessary header for toupper()
- int keymat[3][3] = { { 1, 2, 1 }, { 2, 3, 2 }, { 2, 2, 1 } };
- int invkeymat[3][3] = { { -1, 0, 1 }, { 2, -1, 0 }, { -2, 2, -1 } };
- char key[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
- void encode(char a, char b, char c, char ret[4]) {
-    int x, y, z;
-    int posa = (int) a - 65;
-    int posb = (int) b - 65;
-    int posc = (int) c - 65;
-    
-    x = posa * keymat[0][0] + posb * keymat[1][0] + posc * keymat[2][0];
-    y = posa * keymat[0][1] + posb * keymat[1][1] + posc * keymat[2][1];
-    z = posa * keymat[0][2] + posb * keymat[1][2] + posc * keymat[2][2];
-    
-    ret[0] = key[(x % 26 + 26) % 26];
-    ret[1] = key[(y % 26 + 26) % 26];
-    ret[2] = key[(z % 26 + 26) % 26];
-    ret[3] = '\0';
- }
- void decode(char a, char b, char c, char ret[4]) {
-    int x, y, z;
-    int posa = (int) a - 65;
-    int posb = (int) b - 65;
-    int posc = (int) c - 65;
-    
-    x = posa * invkeymat[0][0] + posb * invkeymat[1][0] + posc * 
-invkeymat[2][0];
-    y = posa * invkeymat[0][1] + posb * invkeymat[1][1] + posc * 
-invkeymat[2][1];
-    z = posa * invkeymat[0][2] + posb * invkeymat[1][2] + posc * 
-invkeymat[2][2];
-    
-    ret[0] = key[(x % 26 + 26) % 26];
-    ret[1] = key[(y % 26 + 26) % 26];
-    ret[2] = key[(z % 26 + 26) % 26];
-    ret[3] = '\0';
- }
  int main() {
-    char msg[1000];
-    char enc[1000] = "";
-    char dec[1000] = "";
-    int n;
-    
-    strcpy(msg, "hemanth");
-    printf("Simulation of Hill Cipher\n");
-    printf("Input message : %s\n", msg);
-    
-    for (int i = 0; i < strlen(msg); i++) {
-        msg[i] = toupper(msg[i]);
-    }
-    
-    // Remove spaces
-    n = strlen(msg) % 3;
-    
-    // Append padding text X
-    if (n != 0) {
-        for (int i = 1; i <= (3 - n); i++) {
-            strcat(msg, "X");
-        }
-    }
-    
-    printf("Padded message : %s\n", msg);
-    
-    for (int i = 0; i < strlen(msg); i += 3) {
-        char a = msg[i];
-        char b = msg[i + 1];
-        char c = msg[i + 2];
-        char ret[4];
-        encode(a, b, c, ret);
-        strcat(enc, ret);
-    }
-    
-    printf("Encoded message : %s\n", enc);
-    
-    for (int i = 0; i < strlen(enc); i += 3) {
-        char a = enc[i];
-        char b = enc[i + 1];
-        char c = enc[i + 2];
-        char ret[4];
-        decode(a, b, c, ret);
-        strcat(dec, ret);
-    }
-    
-    printf("Decoded message : %s\n", dec);
-    
-    return 0;
+ unsigned int a[3][3] = {{6, 24, 1}, {13, 16, 10}, {20, 17, 15}};
+ unsigned int b[3][3] = {{8, 5, 10}, {21, 8, 21}, {21, 12, 8}};
+ int i, j, t = 0;
+ unsigned int c[3], d[3];
+ char msg[4];
+ printf("Enter plain text (3 letters): ");
+scanf("%3s", msg); 
+ if (strlen(msg) != 3) {
+ printf("Error: The plain text must be exactly 3 letters.\n");
+ return 1;
  }
-```
+ 
+ for (i = 0; i < 3; i++) {
+ c[i] = msg[i]- 'A';
+ printf("%d ", c[i]); 
+ }
+
+ for (i = 0; i < 3; i++) {
+ t = 0;
+ for (j = 0; j < 3; j++) {
+ t += a[i][j] * c[j];
+ }
+ d[i] = t % 26;
+ }
+ 
+ printf("\nEncrypted Cipher Text: ");
+ for (i = 0; i < 3; i++) {
+ printf("%c", d[i] + 'A');
+ }
+
+ for (i = 0; i < 3; i++) {
+ t = 0;
+for (j = 0; j < 3; j++) {
+ t += b[i][j] * d[j];
+ }
+ c[i] = t % 26; 
+ }
+ 
+ printf("\nDecrypted Cipher Text: ");
+ for (i = 0; i < 3; i++) {
+ printf("%c", c[i] + 'A');
+ }
+ getchar(); 
+ return 0;
+ }```
 ## OUTPUT:
 
 ## Simulating Hill Cipher
 
-![Screenshot 2024-09-02 104504](https://github.com/user-attachments/assets/a3f4a7cf-c278-4805-ba28-ce652f393fd0)
+![Screenshot 2025-03-26 083351](https://github.com/user-attachments/assets/2a5404d5-0670-45b7-aeb4-e33042b81a0e)
+
 
 
 ## RESULT:
