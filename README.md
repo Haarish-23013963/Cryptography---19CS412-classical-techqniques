@@ -390,82 +390,72 @@ The Vigenere cipher is a method of encrypting alphabetic text by using a series 
 
 
 ## PROGRAM:
+### NAME: HAARISH V
+### REGISTER NO: 212223230067
+## Vigenere Cipher:
 ```
-#include <stdio.h>
-#include <stdlib.h>  // For exit() function
-#include <ctype.h>   // For toupper() function
-#include <string.h>  // For strlen() function
-
-void encipher();
-void decipher();
-
+ #include <stdio.h>
+ #include <ctype.h>
+ #include <string.h>
+ #include <stdlib.h>
+ void encipher();
+ void decipher();
 int main() {
-    int choice;
-    while (1) {
-        printf("\n1. Encrypt Text");
-        printf("\n2. Decrypt Text");
-        printf("\n3. Exit");
-        printf("\n\nEnter Your Choice: ");
-        scanf("%d", &choice);
-
-        if (choice == 3)
-            exit(0);
-        else if (choice == 1)
-            encipher();
-        else if (choice == 2)
-            decipher();
-        else
-            printf("Please Enter a Valid Option.\n");
-    }
-    return 0;  // Added return statement for the main function
-}
-
-void encipher() {
-    unsigned int i, j;
-    char input[50], key[10];
-
-    printf("\n\nEnter Plain Text: ");
-    scanf("%s", input);  // Removed newline for better input handling
-
-    printf("Enter Key Value: ");
-    scanf("%s", key);
-
-    printf("Resultant Cipher Text: ");
-    for (i = 0, j = 0; i < strlen(input); i++, j++) {
-        if (j >= strlen(key)) {
-            j = 0;
-        }
-        printf("%c", 65 + (((toupper(input[i]) - 65) + (toupper(key[j]) - 65)) % 26));
-    }
-    printf("\n");  // Added newline for output formatting
-}
-
-void decipher() {
-    unsigned int i, j;
-    char input[50], key[10];
-    int value;
-
-    printf("\n\nEnter Cipher Text: ");
-    scanf("%s", input);  // Removed newline for better input handling
-
-    printf("Enter the Key Value: ");
-    scanf("%s", key);
-
-    printf("Resultant Plain Text: ");
-    for (i = 0, j = 0; i < strlen(input); i++, j++) {
-        if (j >= strlen(key)) {
-            j = 0;
-        }
-
-        // Calculate the decrypted character value
-        value = (toupper(input[i]) - 65) - (toupper(key[j]) - 65);
-        if (value < 0) {
-            value += 26;  // Correct for negative values in circular shift
-        }
-        printf("%c", 65 + (value % 26));
-    }
-    printf("\n");  // Added newline for output formatting
-}
+ int choice;
+ while (1) {
+ printf("\n1. Encrypt Text");
+ printf("\t2. Decrypt Text");
+ printf("\t3. Exit");
+ printf("\n\nEnter Your Choice: ");
+ scanf("%d", &choice);
+ if (choice == 3)
+ return 0; 
+ else if (choice == 1)
+ encipher();
+ else if (choice == 2)
+ decipher();
+ else
+ printf("Please Enter a Valid Option.\n");
+ }
+ }
+ void encipher() {
+ unsigned int i, j;
+ char input[50], key[10];
+ printf("\n\nEnter Plain Text: ");
+ scanf("%s", input);
+ printf("\nEnter Key Value: ");
+ scanf("%s", key);
+ printf("\nResultant Cipher Text: ");
+for (i = 0, j = 0; i < strlen(input); i++, j++) {
+ if (j >= strlen(key)) {
+ j = 0; 
+ }
+ printf("%c", 65 + (((toupper(input[i])- 65) + (toupper(key[j])- 65)) % 26));
+ 
+ }
+ printf("\n"); 
+ }
+ void decipher() {
+ unsigned int i, j;
+ char input[50], key[10];
+ int value;
+ printf("\n\nEnter Cipher Text: ");
+ scanf("%s", input);
+ printf("\nEnter the Key Value: ");
+ scanf("%s", key);
+ printf("\nDecrypted Plain Text: ");
+ for (i = 0, j = 0; i < strlen(input); i++, j++) {
+ if (j >= strlen(key)) {
+ j = 0; 
+ }
+ value = (toupper(input[i])- 65)- (toupper(key[j])- 65);
+ if (value < 0) {
+ value += 26; 
+ }
+printf("%c", 65 + (value % 26));
+ }
+ printf("\n");
+ }
 ```
 ## OUTPUT:
 
