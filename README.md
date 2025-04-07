@@ -495,6 +495,8 @@ ALGORITHM DESCRIPTION:
 In the rail fence cipher, the plaintext is written downwards and diagonally on successive "rails" of an imaginary fence, then moving up when we reach the bottom rail. When we reach the top rail, the message is written downwards again until the whole plaintext is written out. The message is then read off in rows.
 
 ## PROGRAM:
+### NAME: HAARISH V
+### REGISTER NO: 212223230067
 ```
  #include <stdio.h>
  #include <string.h>
