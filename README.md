@@ -496,120 +496,55 @@ In the rail fence cipher, the plaintext is written downwards and diagonally on s
 
 ## PROGRAM:
 ```
-#include <stdio.h>
-#include <string.h>
+ #include <stdio.h>
+ #include <string.h>
+ int main() {
+ int i, j, k, l;
+ char a[20], c[20], d[20];
+ printf("\n\t\tRAIL FENCE TECHNIQUE\n");
+ // Safely getting input string using fgets instead of gets
+ printf("\nEnter the input string: ");
+ fgets(a, sizeof(a), stdin);
+ a[strcspn(a, "\n")] = '\0';
+ l = strlen(a); // Get the length of the input string
+ // Rail fence encryption: first collect even indices, then odd
+ for (i = 0, j = 0; i < l; i++) {
+ if (i % 2 == 0) {
+ c[j++] = a[i];
+ }
+ }
+ for (i = 0; i < l; i++) {
+ if (i % 2 == 1) {
+ c[j++] = a[i];
+ }
+ }
+ c[j] = '\0'; // Null-terminate the encrypted string
+ printf("\nCipher text after applying rail fence: %s\n", c);
+ // Rail fence decryption
+ if (l % 2 == 0) {
+ k =l / 2;
+ } else {
+ k =(l / 2) + 1;
+ }
+ // Reconstructing the original text
+ for (i = 0, j = 0; i < k; i++) {
+ d[j] = c[i];
+ j += 2;
+ }
+ for (i = k, j = 1; i < l; i++) {
+d[j] = c[i];
+ j += 2;
+ }
+ d[l] = '\0'; // Null-terminate the decrypted string
+ printf("\nText after decryption: %s\n", d);
+ return 0; // Properly return from main
+ }
 
-void encryptRailFence(char *text, int key, char *cipherText) {
-    int len = strlen(text);
-    int row, col, direction;
-    char rail[key][len];
-
-    // Initializing the rail matrix with newline characters
-    for (row = 0; row < key; row++) {
-        for (col = 0; col < len; col++) {
-            rail[row][col] = '\n';
-        }
-    }
-
-    // Placing characters in the rail matrix in a zig-zag manner
-    row = 0;
-    direction = 1; // 1 for down, -1 for up
-    for (col = 0; col < len; col++) {
-        rail[row][col] = text[col];
-        if (row == 0)
-            direction = 1;
-        else if (row == key - 1)
-            direction = -1;
-        row += direction;
-    }
-
-    // Reading the matrix row-wise to get the cipher text
-    int index = 0;
-    for (row = 0; row < key; row++) {
-        for (col = 0; col < len; col++) {
-            if (rail[row][col] != '\n') {
-                cipherText[index++] = rail[row][col];
-            }
-        }
-    }
-    cipherText[index] = '\0';
-}
-
-void decryptRailFence(char *cipherText, int key, char *plainText) {
-    int len = strlen(cipherText);
-    int row, col, direction;
-    char rail[key][len];
-
-    // Initializing the rail matrix with newline characters
-    for (row = 0; row < key; row++) {
-        for (col = 0; col < len; col++) {
-            rail[row][col] = '\n';
-        }
-    }
-
-    // Marking the places in the rail matrix where the cipher text will be placed
-    row = 0;
-    direction = 1; // 1 for down, -1 for up
-    for (col = 0; col < len; col++) {
-        rail[row][col] = '*';
-        if (row == 0)
-            direction = 1;
-        else if (row == key - 1)
-            direction = -1;
-        row += direction;
-    }
-
-    // Filling the rail matrix with the cipher text characters
-    int index = 0;
-    for (row = 0; row < key; row++) {
-        for (col = 0; col < len; col++) {
-            if (rail[row][col] == '*' && index < len) {
-                rail[row][col] = cipherText[index++];
-            }
-        }
-    }
-
-    // Reading the matrix in a zig-zag manner to get the plain text
-    row = 0;
-    direction = 1; // 1 for down, -1 for up
-    for (col = 0; col < len; col++) {
-        plainText[col] = rail[row][col];
-        if (row == 0)
-            direction = 1;
-        else if (row == key - 1)
-            direction = -1;
-        row += direction;
-    }
-    plainText[len] = '\0';
-}
-
-int main() {
-    char text[100], cipherText[100], plainText[100];
-    int key;
-
-    // Input the plain text
-    printf("Enter the plain text: ");
-    gets(text);
-
-    // Input the key (number of rails)
-    printf("Enter the key (number of rails): ");
-    scanf("%d", &key);
-
-    // Encrypt the plain text
-    encryptRailFence(text, key, cipherText);
-    printf("Encrypted Text: %s\n", cipherText);
-
-    // Decrypt the cipher text
-    decryptRailFence(cipherText, key, plainText);
-    printf("Decrypted Text: %s\n", plainText);
-
-    return 0;
-}
 
 ```
 ## OUTPUT:
 
-![Screenshot 2024-09-02 104927](https://github.com/user-attachments/assets/e8fbbfc7-ba66-438a-b9a3-df54f03b8b55)
+![Screenshot 2025-04-07 222622](https://github.com/user-attachments/assets/e7347559-0f01-4644-b567-613c9f543f4e)
 
 
 ## RESULT:
